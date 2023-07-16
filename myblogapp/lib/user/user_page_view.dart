@@ -30,7 +30,7 @@ class _UserPageState extends BlogController<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Your Blogs")),
+        title: const Text("Your Blogs"),
         actions: [
           IconButton(
               onPressed: () {

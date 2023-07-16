@@ -32,10 +32,7 @@ class _HomePageState extends BlogController<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Padding(
-            padding: EdgeInsets.only(left: 95.0),
-            child: Text("All Blogs"),
-          ),
+          title: const Text("All Blogs"),
           leading: IconButton(
             onPressed: () {
               navigateToUserPage();
