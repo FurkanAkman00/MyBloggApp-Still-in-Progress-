@@ -16,7 +16,11 @@ class _SingleBlogViewState extends State<SingleBlogView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.blog.title ?? "NODATA")),
+      appBar: AppBar(
+          title: Padding(
+        padding: const EdgeInsets.only(left: 104.0),
+        child: Text(widget.blog.title ?? "NODATA"),
+      )),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: SingleChildScrollView(

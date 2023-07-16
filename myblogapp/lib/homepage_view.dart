@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myblogapp/blog/single_blog_view.dart';
+import 'package:myblogapp/core/theme_manager.dart';
 import 'package:myblogapp/user/user_page_view.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,10 @@ class _HomePageState extends BlogController<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text("All Blogs")),
+          title: const Padding(
+            padding: EdgeInsets.only(left: 95.0),
+            child: Text("All Blogs"),
+          ),
           leading: IconButton(
             onPressed: () {
               navigateToUserPage();
@@ -39,6 +43,17 @@ class _HomePageState extends BlogController<HomePage> {
             icon: const Icon(Icons.person),
           ),
           actions: [
+            IconButton(
+                onPressed: () {
+                  context.read<ThemeManager>().changeTheme();
+                },
+                icon: AnimatedCrossFade(
+                    firstChild: const Icon(Icons.light_mode),
+                    secondChild: const Icon(Icons.dark_mode),
+                    crossFadeState: context.watch<ThemeManager>().lightTheme
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: const Duration(seconds: 1))),
             IconButton(
                 onPressed: () async {
                   handleLogOut(context);
@@ -59,38 +74,36 @@ class _HomePageState extends BlogController<HomePage> {
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Card(
-            child: ListTile(
-              dense: true,
-              tileColor: const Color.fromARGB(255, 7, 101, 10),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0)),
-              title: Center(
+          child: ListTile(
+            dense: true,
+            tileColor: const Color.fromARGB(255, 7, 101, 10),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0)),
+            title: Center(
+              child: Text(
+                "${blogs![index].title} By ${blogs![index].title}",
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Colors.white),
+              ),
+            ),
+            leading: const CircleAvatar(
+              radius: 28,
+              backgroundImage: NetworkImage("https://picsum.photos/200/300"),
+            ),
+            subtitle: SizedBox(
+                height: 70,
                 child: Text(
-                  "${blogs![index].title} By ${blogs![index].title}",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Colors.white),
-                ),
-              ),
-              leading: const CircleAvatar(
-                radius: 28,
-                backgroundImage: NetworkImage("https://picsum.photos/200/300"),
-              ),
-              subtitle: SizedBox(
-                  height: 70,
-                  child: Text(
-                    blogs![index].description ?? "NoData",
-                    style: const TextStyle(color: Colors.white60),
-                  )),
-              trailing: IconButton(
-                color: Colors.black,
-                onPressed: () {
-                  navigateToBlogPage(blogs![index]);
-                },
-                icon: const Icon(Icons.arrow_right),
-              ),
+                  blogs![index].description ?? "NoData",
+                  style: const TextStyle(color: Colors.white60),
+                )),
+            trailing: IconButton(
+              color: Colors.black,
+              onPressed: () {
+                navigateToBlogPage(blogs![index]);
+              },
+              icon: const Icon(Icons.arrow_right),
             ),
           ),
         );

@@ -30,7 +30,7 @@ class _UserPageState extends BlogController<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Your Blogs"),
+        title: const Center(child: Text("Your Blogs")),
         actions: [
           IconButton(
               onPressed: () {
@@ -53,44 +53,42 @@ class _UserPageState extends BlogController<UserPage> {
             ? const SizedBox.shrink()
             : Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: GestureDetector(
-                    onTapDown: _getTapPosition,
-                    child: ListTile(
-                      onLongPress: () {
-                        _showContextMenu(context, blogs?[index]);
-                      },
-                      dense: true,
-                      tileColor: const Color.fromARGB(255, 7, 101, 10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
-                      title: Center(
+                child: GestureDetector(
+                  onTapDown: _getTapPosition,
+                  child: ListTile(
+                    onLongPress: () {
+                      _showContextMenu(context, blogs?[index]);
+                    },
+                    dense: true,
+                    tileColor: const Color.fromARGB(255, 7, 101, 10),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0)),
+                    title: Center(
+                      child: Text(
+                        "${blogs![index].title} By ${blogs![index].author}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white),
+                      ),
+                    ),
+                    leading: const CircleAvatar(
+                      radius: 28,
+                      backgroundImage:
+                          NetworkImage("https://picsum.photos/200/300"),
+                    ),
+                    subtitle: SizedBox(
+                        height: 70,
                         child: Text(
-                          "${blogs![index].title} By ${blogs![index].author}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.white),
-                        ),
-                      ),
-                      leading: const CircleAvatar(
-                        radius: 28,
-                        backgroundImage:
-                            NetworkImage("https://picsum.photos/200/300"),
-                      ),
-                      subtitle: SizedBox(
-                          height: 70,
-                          child: Text(
-                            blogs![index].description ?? "NoData",
-                            style: const TextStyle(color: Colors.white60),
-                          )),
-                      trailing: IconButton(
-                        color: Colors.black,
-                        onPressed: () {
-                          navigateToBlogPage(blogs![index]);
-                        },
-                        icon: const Icon(Icons.arrow_right),
-                      ),
+                          blogs![index].description ?? "NoData",
+                          style: const TextStyle(color: Colors.white60),
+                        )),
+                    trailing: IconButton(
+                      color: Colors.black,
+                      onPressed: () {
+                        navigateToBlogPage(blogs![index]);
+                      },
+                      icon: const Icon(Icons.arrow_right),
                     ),
                   ),
                 ),
