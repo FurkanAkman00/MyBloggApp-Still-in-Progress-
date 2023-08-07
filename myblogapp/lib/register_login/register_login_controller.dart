@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:myblogapp/register_login/login.dart';
+import 'package:myblogapp/register_login/register_view.dart';
 import 'package:myblogapp/register_login/services/register_login_service.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +22,7 @@ abstract class RegisterLoginController<T extends StatefulWidget>
   late final RegsiterLoginService service;
 
   // {your ip adress}:5000/user/
-  final _baseUrl = "";
+  final _baseUrl = "http://192.168.1.173:5000/user/";
 
   @override
   void initState() {
@@ -59,5 +61,15 @@ abstract class RegisterLoginController<T extends StatefulWidget>
     } else {
       changeError(true);
     }
+  }
+
+  void navigateToLoginPage() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LoginPage()));
+  }
+
+  void navigateToRegisterPage() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const RegisterView()));
   }
 }

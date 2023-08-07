@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:myblogapp/core/theme_manager.dart';
-import 'package:myblogapp/login_register.dart';
+import 'package:myblogapp/splashpage.dart';
 import 'package:provider/provider.dart';
 
 import 'core/auth_manager.dart';
@@ -21,18 +20,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
   @override
-  final _lightColor = _lightColors();
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: context.watch<ThemeManager>().currentTheme,
-      home: const LoginRegister(),
+      home: const SplashPage(),
     );
   }
-}
-
-class _lightColors {
-  final Color _bodyText1 = Colors.black;
 }

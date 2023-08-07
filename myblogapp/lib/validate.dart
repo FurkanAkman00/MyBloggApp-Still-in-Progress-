@@ -37,7 +37,7 @@ class Validate {
 }
 
 class Errors {
-  static String empty = "This area cannot be empty!";
-  static String lowCharacter = "Cannot be lower than 3 characters!";
-  static String validEmail = "Please enter a valid email";
+  static const String empty = "This area cannot be empty!";
+  static const String lowCharacter = "Cannot be lower than 3 characters!";
+  static const String validEmail = "Please enter a valid email";
 }

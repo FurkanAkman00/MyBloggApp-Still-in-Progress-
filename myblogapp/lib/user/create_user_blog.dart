@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:myblogapp/blog/blog_controller.dart';
-import 'package:myblogapp/core/auth_manager.dart';
-import 'package:provider/provider.dart';
+
 
 import '../models/BlogModel.dart';
 import '../validate.dart';

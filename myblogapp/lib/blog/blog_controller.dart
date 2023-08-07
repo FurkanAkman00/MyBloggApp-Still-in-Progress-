@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myblogapp/blog/blog_service.dart';
 import 'package:myblogapp/blog/single_blog_view.dart';
-import 'package:myblogapp/homepage_view.dart';
 import 'package:myblogapp/models/BlogModel.dart';
-import 'package:myblogapp/user/create_user_blog.dart';
 import 'package:provider/provider.dart';
 
 import '../core/auth_manager.dart';
@@ -19,7 +17,7 @@ abstract class BlogController<T extends StatefulWidget> extends State<T> {
   }
 
   // {your ip adress}:5000/blogs.
-  final _baseUrl = "";
+  final _baseUrl = "http://192.168.1.173:5000/blogs";
   late final BlogService blogService;
   @override
   void initState() {

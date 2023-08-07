@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myblogapp/blog/single_blog_view.dart';
 import 'package:myblogapp/core/theme_manager.dart';
 import 'package:myblogapp/user/user_page_view.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends BlogController<HomePage> {
   late List<Blog>? blogs;
+
   @override
   void initState() {
     super.initState();
@@ -44,13 +44,7 @@ class _HomePageState extends BlogController<HomePage> {
                 onPressed: () {
                   context.read<ThemeManager>().changeTheme();
                 },
-                icon: AnimatedCrossFade(
-                    firstChild: const Icon(Icons.light_mode),
-                    secondChild: const Icon(Icons.dark_mode),
-                    crossFadeState: context.watch<ThemeManager>().lightTheme
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    duration: const Duration(seconds: 1))),
+                icon: _themeChangeIcon(context)),
             IconButton(
                 onPressed: () async {
                   handleLogOut(context);
@@ -71,41 +65,52 @@ class _HomePageState extends BlogController<HomePage> {
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            dense: true,
-            tileColor: const Color.fromARGB(255, 7, 101, 10),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0)),
-            title: Center(
-              child: Text(
-                "${blogs![index].title} By ${blogs![index].title}",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: Colors.white),
-              ),
-            ),
-            leading: const CircleAvatar(
-              radius: 28,
-              backgroundImage: NetworkImage("https://picsum.photos/200/300"),
-            ),
-            subtitle: SizedBox(
-                height: 70,
-                child: Text(
-                  blogs![index].description ?? "NoData",
-                  style: const TextStyle(color: Colors.white60),
-                )),
-            trailing: IconButton(
-              color: Colors.black,
-              onPressed: () {
-                navigateToBlogPage(blogs![index]);
-              },
-              icon: const Icon(Icons.arrow_right),
-            ),
-          ),
+          child: _singleBlogCard(index),
         );
       },
     );
+  }
+
+  ListTile _singleBlogCard(int index) {
+    return ListTile(
+      dense: true,
+      tileColor: const Color.fromARGB(255, 7, 101, 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      title: Center(
+        child: Text(
+          "${blogs![index].title} By ${blogs![index].title}",
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+        ),
+      ),
+      leading: const CircleAvatar(
+        radius: 28,
+        backgroundImage: NetworkImage("https://picsum.photos/200/300"),
+      ),
+      subtitle: SizedBox(
+          height: 70,
+          child: Text(
+            blogs![index].description ?? "NoData",
+            style: const TextStyle(color: Colors.white60),
+          )),
+      trailing: IconButton(
+        color: Colors.black,
+        onPressed: () {
+          navigateToBlogPage(blogs![index]);
+        },
+        icon: const Icon(Icons.arrow_right),
+      ),
+    );
+  }
+
+  AnimatedCrossFade _themeChangeIcon(BuildContext context) {
+    return AnimatedCrossFade(
+        firstChild: const Icon(Icons.light_mode),
+        secondChild: const Icon(Icons.dark_mode),
+        crossFadeState: context.watch<ThemeManager>().lightTheme
+            ? CrossFadeState.showSecond
+            : CrossFadeState.showFirst,
+        duration: const Duration(seconds: 1));
   }
 
   void navigateToUserPage() {

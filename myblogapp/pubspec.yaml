@@ -33,8 +33,14 @@ dependencies:
 
   #Dio
   dio: ^5.2.1+1
+
+  #Animation
+  lottie: ^2.5.0
+  flutter_spinkit: ^5.2.0
+
   #Cache
   shared_preferences: ^2.2.0
+  
   #Provider
   provider: ^6.0.5
 
@@ -67,8 +73,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+      - assets/appImage/
+      - assets/login-register/
+      - assets/splash/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -30,60 +30,86 @@ class _RegisterViewState extends RegisterLoginController {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
         child: Form(
           key: _key,
-          child: SizedBox(
-            width: 320,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                showError
-                    ? const Padding(
-                        padding: EdgeInsets.only(bottom: 12.0),
-                        child: Text(
-                          "An error has accured. This email might already in use. Please try again.",
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-                SizedBox(
-                  height: 65,
-                  child: TextFormField(
+          child: Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: RegisterFieldValues.formFieldWidth,
+              child: Column(
+                children: [
+                  showError
+                      ? const Padding(
+                          padding: EdgeInsets.only(bottom: 12.0),
+                          child: Text(
+                            RegisterFieldValues.errorMessage,
+                            style: TextStyle(
+                                color: RegisterFieldValues.errorColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  Image.asset(
+                    RegisterFieldValues.imagePath,
+                    height: RegisterFieldValues.imageHeight,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 30),
+                    child: Text(
+                      RegisterFieldValues.signup,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: RegisterFieldValues.blackColor,
+                          fontSize: RegisterFieldValues.fontSize),
+                    ),
+                  ),
+                  TextFormField(
                     controller: usernameController,
                     validator: Validate.username,
-                    maxLength: 10,
+                    maxLength: RegisterFieldValues.maxUserName,
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.abc),
-                        labelText: "Username"),
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                                RegisterFieldValues.fieldBorderRadius)),
+                        prefixIcon: const Icon(
+                          Icons.abc,
+                          color: RegisterFieldValues.blackColor,
+                        ),
+                        labelText: RegisterFieldValues.userName),
                   ),
-                ),
-                SizedBox(
-                  height: 65,
-                  child: TextFormField(
+                  TextFormField(
                     controller: emailController,
                     validator: Validate.email,
-                    maxLength: 30,
+                    textInputAction: TextInputAction.next,
+                    maxLength: RegisterFieldValues.emailMaxLength,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.mail),
-                        labelText: "Email Adress"),
+                    decoration: InputDecoration(
+                        fillColor: RegisterFieldValues.fillColor,
+                        filled: true,
+                        prefixIconColor: RegisterFieldValues.blackColor,
+                        counterStyle: const TextStyle(
+                            color: RegisterFieldValues.fillColor),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                                RegisterFieldValues.fieldBorderRadius)),
+                        prefixIcon: const Icon(Icons.mail),
+                        hintText: RegisterFieldValues.email),
                   ),
-                ),
-                MyPasswordField(
-                  controller: passwordController,
-                  validator: Validate.password,
-                ),
-                SizedBox(
-                    width: 200,
-                    child: ElevatedButton(
-                        onPressed: handleSubmit, child: const Text("Register")))
-              ],
+                  MyPasswordField(
+                    controller: passwordController,
+                    validator: Validate.password,
+                  ),
+                  SizedBox(
+                      width: RegisterFieldValues.imageHeight,
+                      child: ElevatedButton(
+                          onPressed: handleSubmit,
+                          child: const Text(RegisterFieldValues.signup)))
+                ],
+              ),
             ),
           ),
         ),
@@ -112,4 +138,25 @@ class _RegisterViewState extends RegisterLoginController {
       deleteFields();
     }
   }
+}
+
+class RegisterFieldValues {
+  static const formFieldWidth = 350.0;
+  static const maxUserName = 10;
+  static const fieldBorderRadius = 20.0;
+  static const imageHeight = 200.0;
+  static const emailMaxLength = 30;
+  static const fontSize = 30.0;
+
+  static const blackColor = Colors.black87;
+  static const errorColor = Colors.red;
+  static const fillColor = Colors.white;
+
+  static const errorMessage =
+      "An error has accured. This email might already in use. Please try again.";
+  static const imagePath = "assets/login-register/login-register-page-icon.png";
+  static const userName = "Username";
+  static const email = "Email";
+  static const password = "Password";
+  static const signup = "Sign Up";
 }

@@ -1,10 +1,6 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:myblogapp/models/BlogModel.dart';
-import 'package:provider/provider.dart';
-
-import 'package:myblogapp/core/auth_manager.dart';
 
 abstract class IBlogService {
   Dio _dio;
@@ -33,6 +29,7 @@ class BlogService extends IBlogService {
     } catch (_) {
       return null;
     }
+    return null;
   }
 
   @override
