@@ -2,14 +2,17 @@ const express = require("express")
 const router = express.Router()
 
 const controller = require("../controllers/BlogController")
+const checkAuth = require("../middlewares/checkAuth")
 
-router.get("/all",controller.getAllPosts)
+router.get("/all",controller.getAllBlogs)
 
-router.get("/userPost/:token",controller.getUserPosts)
+router.get("/userBlogs/:token",checkAuth,controller.getUserBlogs)
 
-router.delete("/userPostDelete/:token",controller.deleteUserPost)
+router.delete("/userBlogDelete/:token",checkAuth,controller.deleteUserBlog)
 
-router.post("/", controller.createBlogPost)
+router.post("/blogs/likeBlog/:token",checkAuth,controller.likeBlog)
+
+router.post("/:token",checkAuth,controller.createBlog)
 
 
 module.exports = router

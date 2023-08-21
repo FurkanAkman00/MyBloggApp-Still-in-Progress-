@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/User")
 
 module.exports = {
-    getAllPosts :async(req,res) =>{
+    getAllBlogs :async(req,res) =>{
         try {
             const blogs = await Blog.find()
             if(blogs){
@@ -17,24 +17,29 @@ module.exports = {
         }
     },
 
-    deleteUserPost : async(req,res) => {
+    deleteUserBlog : async(req,res) => {
         try {
-            const user = await findUser(req.params.token)
-            const index = user.blogs.indexOf(req.body)
+            const user = req.user
+            if(user){
+                const index = user.blogs.indexOf(req.body)
             
-            if (index >-1){
-                user.blogs.splice(index,1)
-            }
+                if (index >-1){
+                    user.blogs.splice(index,1)
+                }
 
-            await user.save()
+                await user.save()
+                
+                const value = await Blog.findOneAndDelete(req.body)
+
+                if(value){
+                    res.status(200).send("Deleted Succesfully.")
+                } else{
+                    res.status(404).send("Blog not found.")
+                }
+            } else {
+            res.sendStatus(401)
+        }
             
-            const value = await Blog.findOneAndDelete(req.body)
-
-            if(value){
-                res.status(200).send("Deleted Succesfully.")
-            } else{
-                res.status(404).send("Blog not found.")
-            }
             
         } catch (error) {
             res.status(404)
@@ -42,48 +47,81 @@ module.exports = {
         }
     },
 
-    getUserPosts : async(req,res) =>{
+    getUserBlogs : async(req,res) =>{
         try {
-            const user = await findUser(req.params.token)
-            res.status(200).send(user.blogs)
+            const user = req.user
+            if(user == false){
+                res.sendStatus(401)
+            } else {
+                res.status(200).send(user.blogs)
+            }
+            
 
         } catch (error) {
             console.error(error)
-            res.status(404)
+            res.sendStatus(404)
         }
     },
 
-    createBlogPost : async (req,res) =>{
+    likeBlog : async (req,res) => {  
+        try {
+            const user = req.user
+            if(user){
+                if(req.body.isLiked != true){
+                    const blog = await Blog.findOne(req.body.blog)
+                    user.likedBlogs.push(blog)
+                    blog.likeCount = blog.likeCount + 1
+                    await user.save()
+                    await blog.save()
+                    res.sendStatus(200)
+                } else {
+                    const blog = await Blog.findOne(req.body.blog)
+                    const index = user.blogs.indexOf(blog)
+            
+                    if (index >-1){
+                        user.likedBlogs.splice(index,1)
+                    }
+                    blog.likeCount = blog.likeCount -1
+                    await user.save()
+                    await blog.save()
+                    res.sendStatus(200)
+                }
+            } else {
+                res.status(401)
+            }
+        } catch (error) {
+            console.error(error)
+            res.sendStatus(404)
+        }
+    },
+
+    createBlog : async (req,res) =>{
         try { 
-            const user = await findUser(req.body.token,res)
+            const user = req.user
 
-            const blog = await Blog.create({
-                title: req.body.title,
-                content: req.body.content,
-                description: req.body.description,
-                author: user.username
-            })
+            if(user){
+                const blog = await Blog.create({
+                    title: req.body.title,
+                    content: req.body.content,
+                    description: req.body.description,
+                    authorName: user.username,
+                    authorEmail: user.email,
+                    likeCount: 0
+                })
 
-            user.blogs.push(blog)
-            await user.save()
-
-            console.log("Blog created")
-            res.sendStatus(201) 
-
+                user.blogs.push(blog)
+                await user.save()
+    
+                console.log("Blog created")
+                res.sendStatus(201) 
+            }
+            else{
+                res.sendStatus(401)
+            }
+            
         } catch (error) {
             console.log(error)
             res.sendStatus(404)
         }
     },
-}
-
-async function findUser(userToken,res){
-    try {
-        const userID = jwt.verify(userToken,process.env.TOKEN_KEY)
-        return await User.findById(userID.user_id).populate('blogs') 
-    } catch (error) {
-        console.error(error)
-        res.sendStatus(404)
-    }
-
 }

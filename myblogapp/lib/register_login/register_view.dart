@@ -30,7 +30,9 @@ class _RegisterViewState extends RegisterLoginController {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _key,

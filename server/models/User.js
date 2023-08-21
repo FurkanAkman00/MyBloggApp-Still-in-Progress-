@@ -21,6 +21,11 @@ const userSchema = new Schema({
     blogs: [{
         type: Schema.Types.ObjectId,
         ref: "Blog"
+    }],
+
+    likedBlogs: [{
+        type: Schema.Types.ObjectId,
+        ref: "Blog"
     }]
 
 })

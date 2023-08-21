@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:myblogapp/register_login/login.dart';
 import 'package:myblogapp/register_login/register_view.dart';
 import 'package:myblogapp/register_login/services/register_login_service.dart';
+import 'package:myblogapp/register_login/start_page.dart';
 import 'package:provider/provider.dart';
 
 import '../core/auth_manager.dart';
@@ -21,8 +24,7 @@ abstract class RegisterLoginController<T extends StatefulWidget>
 
   late final RegsiterLoginService service;
 
-  // {your ip adress}:5000/user/
-  final _baseUrl = "http://192.168.1.173:5000/user/";
+  final _baseUrl = "http://10.0.2.2:5000/user/";
 
   @override
   void initState() {
@@ -33,8 +35,9 @@ abstract class RegisterLoginController<T extends StatefulWidget>
   Future<void> loginUser(String email, String password) async {
     final result = await service.loginUser(email, password);
     if (result != null) {
-      final response = await saveToken(result);
-      if (response) {
+      final userResponse = await saveUser(jsonEncode(result["user"]));
+      final response = await saveToken(result["token"]);
+      if (response && userResponse) {
         await context.read<AuthManager>().fetchUser();
         navigateHomepage();
       } else {
@@ -46,7 +49,8 @@ abstract class RegisterLoginController<T extends StatefulWidget>
   Future<void> registerUser(User user) async {
     final response = await service.registerUser(user);
     if (response != null) {
-      await saveToken(response);
+      await saveUser(jsonEncode(response["user"]));
+      await saveToken(response["token"]);
       await context.read<AuthManager>().fetchUser();
       navigateHomepage();
     } else {
@@ -56,8 +60,9 @@ abstract class RegisterLoginController<T extends StatefulWidget>
 
   void navigateHomepage() {
     if (context.read<AuthManager>().isLogin) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const HomePage()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomePage()),
+          (Route<dynamic> route) => false);
     } else {
       changeError(true);
     }
@@ -71,5 +76,10 @@ abstract class RegisterLoginController<T extends StatefulWidget>
   void navigateToRegisterPage() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const RegisterView()));
+  }
+
+  void navigateToStartPage() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const StartPage()));
   }
 }

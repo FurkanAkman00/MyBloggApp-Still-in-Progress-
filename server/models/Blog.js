@@ -6,6 +6,16 @@ const blogSchema = new Schema({
         type: String,
         required: true
     },
+    likeCount: {
+        type: Number,
+        required: false
+    },
+
+    dislikeCount: {
+        type: Number,
+        required: false
+    },
+
     content: {
         type: String,
         required: true
@@ -19,10 +29,14 @@ const blogSchema = new Schema({
         type:String,
         required:true
     },
-    author: {
+    authorName: {
         type: String,
-        required: false,
-    }
+        required: true
+    },
+    authorEmail: {
+        type: String,
+        required: true
+    } 
 })
 
 module.exports = mongoose.model('Blog',blogSchema)

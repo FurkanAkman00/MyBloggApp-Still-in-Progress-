@@ -5,6 +5,7 @@ class User {
   String? password;
   String? email;
   List<Blog>? blogs;
+  List<Blog>? likedBlogs;
 
   User({this.username, this.password, this.email, this.blogs});
 
@@ -18,6 +19,12 @@ class User {
         blogs!.add(Blog.fromJson(v));
       });
     }
+    if (json['likedBlogs'] != null) {
+      likedBlogs = <Blog>[];
+      json['likedBlogs'].forEach((v) {
+        likedBlogs!.add(Blog.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +35,10 @@ class User {
     if (blogs != null) {
       data['blogs'] = blogs!.map((v) => v.toJson()).toList();
     }
+    if (likedBlogs != null) {
+      data['likedBlogs'] = likedBlogs!.map((v) => v.toJson()).toList();
+    }
+
     return data;
   }
 }

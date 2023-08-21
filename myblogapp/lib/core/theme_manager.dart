@@ -12,11 +12,15 @@ class ThemeManager extends ChangeNotifier {
       ? ThemeData.light().copyWith(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: const AppBarTheme(
+              toolbarHeight: 60,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10))),
               systemOverlayStyle: SystemUiOverlayStyle.light,
-              color: Colors.white,
               centerTitle: true,
               elevation: 0,
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: IconThemeData(color: Colors.white),
               foregroundColor: Colors.white),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
@@ -24,9 +28,11 @@ class ThemeManager extends ChangeNotifier {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)))),
           cardTheme: CardTheme(
-              color: const Color.fromARGB(255, 102, 101, 101),
+              color: Colors.grey[700],
+              shadowColor: Colors.black,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(55))))
+                  side: const BorderSide(color: Colors.black, width: 3),
+                  borderRadius: BorderRadius.circular(10))))
       : ThemeData.dark().copyWith(
           appBarTheme: const AppBarTheme(
               centerTitle: true,

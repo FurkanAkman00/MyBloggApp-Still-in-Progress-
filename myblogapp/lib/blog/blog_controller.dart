@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myblogapp/blog/blog_service.dart';
-import 'package:myblogapp/blog/single_blog_view.dart';
 import 'package:myblogapp/models/BlogModel.dart';
+import 'package:myblogapp/register_login/start_page.dart';
 import 'package:provider/provider.dart';
-
 import '../core/auth_manager.dart';
 
 abstract class BlogController<T extends StatefulWidget> extends State<T> {
@@ -16,19 +14,20 @@ abstract class BlogController<T extends StatefulWidget> extends State<T> {
     });
   }
 
-  // {your ip adress}:5000/blogs.
-  final _baseUrl = "http://192.168.1.173:5000/blogs";
+  final _baseUrl = "http://10.0.2.2:5000/blogs";
   late final BlogService blogService;
   @override
   void initState() {
     super.initState();
-    blogService = BlogService(Dio(BaseOptions(baseUrl: _baseUrl)),
+    blogService = BlogService(
+        Dio(BaseOptions(baseUrl: _baseUrl, validateStatus: (_) => true)),
         context.read<AuthManager>().myToken);
   }
 
   Future<List<Blog>?> getAllBlogs() async {
     changeLoading();
-    final blogs = await blogService.getAllPosts();
+    final blogs = await blogService.getAllBlogs();
+    await Future.delayed(const Duration(seconds: 2));
     changeLoading();
     if (blogs != null) {
       return blogs;
@@ -40,6 +39,7 @@ abstract class BlogController<T extends StatefulWidget> extends State<T> {
   Future<bool?> postBlog(Blog blog) async {
     changeLoading();
     final result = await blogService.postBlog(blog);
+
     changeLoading();
     return result;
   }
@@ -55,6 +55,21 @@ abstract class BlogController<T extends StatefulWidget> extends State<T> {
     }
   }
 
+  Future<bool?> likeBlog(Blog blog, bool isLiked) async {
+    changeLoading();
+    if (isLiked == false) {
+      context.read<AuthManager>().myUser?.likedBlogs?.add(blog);
+      final result = await blogService.likeBlog(blog, isLiked);
+      changeLoading();
+      return result;
+    } else {
+      context.read<AuthManager>().myUser?.likedBlogs?.remove(blog);
+      final result = await blogService.likeBlog(blog, isLiked);
+      changeLoading();
+      return result;
+    }
+  }
+
   Future<bool?> deleteBlog(Blog blog) async {
     changeLoading();
     final result = await blogService.deleteBlog(blog);
@@ -62,8 +77,17 @@ abstract class BlogController<T extends StatefulWidget> extends State<T> {
     return result;
   }
 
-  void navigateToBlogPage(Blog blog) {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => SingleBlogView(blog: blog)));
+  void navigateStartPage() async {
+    await context.read<AuthManager>().deleteAll();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const StartPage()),
+        (Route<dynamic> route) => false);
+  }
+
+  Future<void> handleLogOut(BuildContext context) async {
+    await context.read<AuthManager>().deleteAll();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => StartPage()),
+        (Route<dynamic> route) => false);
   }
 }

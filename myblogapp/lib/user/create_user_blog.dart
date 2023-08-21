@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myblogapp/blog/blog_controller.dart';
 
-
 import '../models/BlogModel.dart';
 import '../validate.dart';
 
@@ -25,7 +24,6 @@ class _CreateBlogState extends BlogController<CreateBlog> {
       appBar: AppBar(
         title: const Text("Create A Blog"),
         actions: [
-          // WTF?
           isLoading
               ? const Center(child: CircularProgressIndicator())
               : const SizedBox.shrink()
@@ -66,7 +64,7 @@ class _CreateBlogState extends BlogController<CreateBlog> {
                       expands: true,
                       maxLines: null,
                       controller: _descriptionController,
-                      maxLength: 100,
+                      maxLength: 200,
                     ),
                   ),
                   Expanded(
@@ -105,7 +103,7 @@ class _CreateBlogState extends BlogController<CreateBlog> {
       _titleController.text = "";
       _contentController.text = "";
       _descriptionController.text = "";
-    } else {
+    } else if (result == null) {
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
@@ -113,6 +111,8 @@ class _CreateBlogState extends BlogController<CreateBlog> {
           return showAlert(context);
         },
       );
+    } else {
+      navigateStartPage();
     }
   }
 

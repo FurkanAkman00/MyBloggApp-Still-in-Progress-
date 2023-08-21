@@ -6,11 +6,13 @@ module.exports = {
     loginPost :async (req,res) =>{
         try {
             const user  = await User.findOne({email: req.body.email,password: req.body.password})
+            .populate("blogs")
+            .populate("likedBlogs")
            
             if(user){
                 const token = createToken(user)
                 console.log("Logged in")
-                res.status(200).json({token: token})
+                res.status(200).json({token: token, user: user})
             } else {
                 res.sendStatus(404)
             }
@@ -24,7 +26,7 @@ module.exports = {
     registerPost : async (req,res) => {
         try {  
             const oldUser = await User.findOne({ email: req.body.email })
-            
+
             if(oldUser){
                 res.status(409).send("User Already Exists. Please Login")
             }
@@ -35,7 +37,7 @@ module.exports = {
 
                 console.log("User Created")
 
-                res.status(201).json({ token: token });
+                res.status(201).json({ token: token,user:user});
             }
         } catch (error) {
             res.sendStatus(404)
