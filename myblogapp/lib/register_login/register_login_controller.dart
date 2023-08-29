@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:myblogapp/register_login/login.dart';
@@ -35,9 +33,8 @@ abstract class RegisterLoginController<T extends StatefulWidget>
   Future<void> loginUser(String email, String password) async {
     final result = await service.loginUser(email, password);
     if (result != null) {
-      final userResponse = await saveUser(jsonEncode(result["user"]));
       final response = await saveToken(result["token"]);
-      if (response && userResponse) {
+      if (response) {
         await context.read<AuthManager>().fetchUser();
         navigateHomepage();
       } else {
@@ -49,7 +46,6 @@ abstract class RegisterLoginController<T extends StatefulWidget>
   Future<void> registerUser(User user) async {
     final response = await service.registerUser(user);
     if (response != null) {
-      await saveUser(jsonEncode(response["user"]));
       await saveToken(response["token"]);
       await context.read<AuthManager>().fetchUser();
       navigateHomepage();

@@ -63,38 +63,6 @@ module.exports = {
         }
     },
 
-    likeBlog : async (req,res) => {  
-        try {
-            const user = req.user
-            if(user){
-                if(req.body.isLiked != true){
-                    const blog = await Blog.findOne(req.body.blog)
-                    user.likedBlogs.push(blog)
-                    blog.likeCount = blog.likeCount + 1
-                    await user.save()
-                    await blog.save()
-                    res.sendStatus(200)
-                } else {
-                    const blog = await Blog.findOne(req.body.blog)
-                    const index = user.blogs.indexOf(blog)
-            
-                    if (index >-1){
-                        user.likedBlogs.splice(index,1)
-                    }
-                    blog.likeCount = blog.likeCount -1
-                    await user.save()
-                    await blog.save()
-                    res.sendStatus(200)
-                }
-            } else {
-                res.status(401)
-            }
-        } catch (error) {
-            console.error(error)
-            res.sendStatus(404)
-        }
-    },
-
     createBlog : async (req,res) =>{
         try { 
             const user = req.user

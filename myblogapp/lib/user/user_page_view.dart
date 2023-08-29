@@ -76,7 +76,6 @@ class _UserPageState extends BlogController<UserPage> {
             builder: (context) => SingleBlogView(
                   blog: blogs![index],
                   isUserBlog: true,
-                  isLiked: false,
                 )))
         .then((value) => fetchUserBlogs());
   }

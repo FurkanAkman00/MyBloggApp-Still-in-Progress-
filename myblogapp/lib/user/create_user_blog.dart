@@ -58,6 +58,7 @@ class _CreateBlogState extends BlogController<CreateBlog> {
                     flex: 2,
                     child: TextFormField(
                       validator: Validate.notEmpty,
+                      textInputAction: TextInputAction.done,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: "Description"),
@@ -73,6 +74,7 @@ class _CreateBlogState extends BlogController<CreateBlog> {
                       minLines: 1,
                       maxLines: 3,
                       validator: Validate.notEmpty,
+                      textInputAction: TextInputAction.done,
                       decoration: const InputDecoration(
                           contentPadding: EdgeInsets.all(10),
                           border: OutlineInputBorder(),

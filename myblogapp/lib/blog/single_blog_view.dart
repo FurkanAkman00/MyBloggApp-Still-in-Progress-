@@ -5,51 +5,29 @@ import 'package:myblogapp/blog/blog_controller.dart';
 import '../models/BlogModel.dart';
 
 class SingleBlogView extends StatefulWidget {
-  const SingleBlogView(
-      {super.key,
-      required this.blog,
-      required this.isUserBlog,
-      required this.isLiked});
+  const SingleBlogView({
+    super.key,
+    required this.blog,
+    required this.isUserBlog,
+  });
   final Blog blog;
   final bool isUserBlog;
-  final bool isLiked;
 
   @override
   State<SingleBlogView> createState() => _SingleBlogViewState();
 }
 
 class _SingleBlogViewState extends BlogController<SingleBlogView> {
-  late bool isLikedBlog;
-  @override
-  void initState() {
-    super.initState();
-    isLikedBlog = widget.isLiked;
-  }
-
-  void changeIsliked() {
-    setState(() {
-      isLikedBlog = !isLikedBlog;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: widget.isUserBlog
               ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.only(right: 0.0),
-                  child: IconButton(
-                      splashRadius: 25,
-                      onPressed: () {
-                        changeIsliked();
-                        likeBlog(widget.blog, isLikedBlog);
-                      },
-                      icon: isLikedBlog
-                          ? const Icon(Icons.check_circle)
-                          : const Icon(Icons.check_circle_outline)),
-                ),
+              : IconButton(
+                  splashRadius: BlogValues.buttonSplashRadius,
+                  onPressed: () {},
+                  icon: const Icon(Icons.check_circle_outline)),
           backgroundColor: Colors.black87,
           iconTheme: const IconThemeData(color: Colors.white),
           actions: [
@@ -66,7 +44,8 @@ class _SingleBlogViewState extends BlogController<SingleBlogView> {
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black, width: 5),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius:
+                      BorderRadius.circular(BlogValues.containerRadius),
                   color: Colors.grey[700]),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -76,20 +55,23 @@ class _SingleBlogViewState extends BlogController<SingleBlogView> {
                     child: Text(
                       widget.blog.title ?? "Noo",
                       style: const TextStyle(
-                          fontSize: 25,
+                          fontSize: BlogValues.contentTitleFontSize,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 20.0, left: 10, right: 10, bottom: 25),
+                        top: BlogValues.contentPaddingTop,
+                        left: BlogValues.contentPaddingLeft,
+                        right: BlogValues.contentPaddingRight,
+                        bottom: BlogValues.contentPaddingBottom),
                     child: Text(
                       widget.blog.content!,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
-                        wordSpacing: 1,
+                        fontSize: BlogValues.contentFontsize,
+                        wordSpacing: BlogValues.contentWordSpacing,
                       ),
                     ),
                   ),
@@ -121,4 +103,18 @@ class _SingleBlogViewState extends BlogController<SingleBlogView> {
       ),
     );
   }
+}
+
+class BlogValues {
+  static const double contentPaddingTop = 20;
+  static const double contentPaddingLeft = 10;
+  static const double contentPaddingRight = 10;
+  static const double contentPaddingBottom = 25;
+  static const double contentFontsize = 15;
+  static const double contentWordSpacing = 1;
+
+  static const double contentTitleFontSize = 25;
+  static const double buttonSplashRadius = 25;
+
+  static const double containerRadius = 20;
 }

@@ -1,24 +1,9 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../models/UserModel.dart';
 
 class CacheManager {
   Future<bool> saveToken(String token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setString(CacheManagerKey.userToken.toString(), token);
-  }
-
-  Future<bool> saveUser(String user) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setString(CacheManagerKey.user.toString(), user);
-  }
-
-  Future<User?> getUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? myUser = prefs.getString(CacheManagerKey.user.toString());
-    return User.fromJson(jsonDecode(myUser!));
   }
 
   Future<String?> getToken() async {

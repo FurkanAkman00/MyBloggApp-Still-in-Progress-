@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:myblogapp/core/auth_manager.dart';
 import 'package:myblogapp/core/theme_manager.dart';
 import 'package:myblogapp/product/blog_card.dart';
 import 'package:myblogapp/user/user_page_view.dart';
@@ -94,15 +93,12 @@ class _HomePageState extends BlogController<HomePage> {
         duration: const Duration(seconds: 1));
   }
 
-  void _navigateToBlogPageFromHome(Blog blog, bool isUserBlog) {
-    bool isLiked =
-        context.read<AuthManager>().myUser?.likedBlogs?.contains(blog) ?? false;
+  Future<void> _navigateToBlogPageFromHome(Blog blog, bool isUserBlog) async {
     Navigator.of(context)
         .push(MaterialPageRoute(
             builder: (context) => SingleBlogView(
                   blog: blog,
                   isUserBlog: isUserBlog,
-                  isLiked: isLiked,
                 )))
         .then((value) => _fetchBlogs());
   }

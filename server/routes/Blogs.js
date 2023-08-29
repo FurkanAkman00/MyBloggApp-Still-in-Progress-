@@ -10,8 +10,6 @@ router.get("/userBlogs/:token",checkAuth,controller.getUserBlogs)
 
 router.delete("/userBlogDelete/:token",checkAuth,controller.deleteUserBlog)
 
-router.post("/blogs/likeBlog/:token",checkAuth,controller.likeBlog)
-
 router.post("/:token",checkAuth,controller.createBlog)
 
 

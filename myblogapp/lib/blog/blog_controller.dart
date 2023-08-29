@@ -55,21 +55,6 @@ abstract class BlogController<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  Future<bool?> likeBlog(Blog blog, bool isLiked) async {
-    changeLoading();
-    if (isLiked == false) {
-      context.read<AuthManager>().myUser?.likedBlogs?.add(blog);
-      final result = await blogService.likeBlog(blog, isLiked);
-      changeLoading();
-      return result;
-    } else {
-      context.read<AuthManager>().myUser?.likedBlogs?.remove(blog);
-      final result = await blogService.likeBlog(blog, isLiked);
-      changeLoading();
-      return result;
-    }
-  }
-
   Future<bool?> deleteBlog(Blog blog) async {
     changeLoading();
     final result = await blogService.deleteBlog(blog);

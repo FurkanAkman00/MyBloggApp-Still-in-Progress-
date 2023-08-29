@@ -24,12 +24,15 @@ class _BlogCardState extends State<BlogCard> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  left: 25, right: 25, top: 25, bottom: 10),
+                  left: CardValues.cardPadding,
+                  right: CardValues.cardPadding,
+                  top: CardValues.cardPadding,
+                  bottom: CardValues.cardPaddingBottom),
               child: Row(
                 children: [
                   SizedBox(
-                    height: 50,
-                    width: 160,
+                    height: CardValues.authorNameHeight,
+                    width: CardValues.authorNameWidth,
                     child: Row(
                       children: [
                         Container(
@@ -39,7 +42,8 @@ class _BlogCardState extends State<BlogCard> {
                               borderRadius: BorderRadius.circular(20)),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
+                          padding: const EdgeInsets.only(
+                              left: CardValues.cardAuthorNamePadding),
                           child: Text(
                             "${widget.blog.authorName}",
                             style: const TextStyle(
@@ -51,7 +55,8 @@ class _BlogCardState extends State<BlogCard> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 90.0),
+                    padding:
+                        const EdgeInsets.only(left: CardValues.cardDatePadding),
                     child: Text(widget.blog.date.toString().split(" ")[0],
                         style: const TextStyle(color: Colors.white)),
                   ),
@@ -59,9 +64,11 @@ class _BlogCardState extends State<BlogCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 30.0, right: 30),
+              padding: const EdgeInsets.only(
+                  left: CardValues.cardTitlePadding,
+                  right: CardValues.cardTitlePadding),
               child: SizedBox(
-                width: 400,
+                width: CardValues.cardTitleWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -71,7 +78,8 @@ class _BlogCardState extends State<BlogCard> {
                           color: Colors.black, fontWeight: FontWeight.w700),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(
+                          top: CardValues.cardDescriptionPadding),
                       child: Text(
                         "${widget.blog.description}",
                         style: const TextStyle(color: Colors.white),
@@ -94,4 +102,17 @@ class _BlogCardState extends State<BlogCard> {
       ),
     ));
   }
+}
+
+class CardValues {
+  static const double cardPadding = 25.0;
+  static const double cardPaddingBottom = 10.0;
+  static const double cardTitlePadding = 30.0;
+  static const double cardDatePadding = 90.0;
+  static const double cardDescriptionPadding = 8.0;
+  static const double cardAuthorNamePadding = 8.0;
+
+  static const double authorNameHeight = 50;
+  static const double authorNameWidth = 160;
+  static const double cardTitleWidth = 400.0;
 }
