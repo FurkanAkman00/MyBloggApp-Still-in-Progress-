@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/User")
 
 module.exports = {
+
     getAllBlogs :async(req,res) =>{
         try {
             const blogs = await Blog.find()
@@ -61,7 +62,6 @@ module.exports = {
             }
             
             if(isLiked){
-                console.log(isLiked)
                 res.status(200).send(true)
             } else {
                 res.status(200).send(false)
@@ -140,7 +140,6 @@ module.exports = {
             
             if(user && blog){
                 if(req.params.isLiked == "false"){
-                    console.log("liked")
                     user.likedBlogs.push(blog)
                     blog.likeCount = blog.likeCount + 1
 
@@ -150,7 +149,6 @@ module.exports = {
                     res.sendStatus(200)
 
                 } else{
-                    console.log("disliked");
                     var myBlog = await Blog.findOne(blog)
                     console.log(myBlog)
                     // const index = user.likedBlogs.indexOf(myBlog)
@@ -158,7 +156,6 @@ module.exports = {
                     for(var i = 0;i<user.likedBlogs.length;i++){
                         if(myBlog.id == user.likedBlogs[i].id){
                             index = i
-                            console.log("a")
                         }
                     }
             

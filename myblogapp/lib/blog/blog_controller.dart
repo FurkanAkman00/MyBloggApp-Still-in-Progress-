@@ -20,7 +20,10 @@ abstract class BlogController<T extends StatefulWidget> extends State<T> {
   void initState() {
     super.initState();
     blogService = BlogService(
-        Dio(BaseOptions(baseUrl: _baseUrl, validateStatus: (_) => true)),
+        Dio(BaseOptions(
+            headers: {"token": context.read<AuthManager>().myToken},
+            baseUrl: _baseUrl,
+            validateStatus: (_) => true)),
         context.read<AuthManager>().myToken);
   }
 

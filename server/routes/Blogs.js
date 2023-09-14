@@ -6,17 +6,15 @@ const checkAuth = require("../middlewares/checkAuth")
 
 router.get("/all",controller.getAllBlogs)
 
-router.get("/userBlogs/:token",checkAuth,controller.getUserBlogs)
+router.get("/userBlogs",checkAuth,controller.getUserBlogs)
 
-// router.get("/likedBlogs/:token",checkAuth,controller.getLikedBlogs)
+router.delete("/userBlogDelete",checkAuth,controller.deleteUserBlog)
 
-router.delete("/userBlogDelete/:token",checkAuth,controller.deleteUserBlog)
+router.post("/createBlog",checkAuth,controller.createBlog)
 
-router.post("/:token",checkAuth,controller.createBlog)
+router.put("/likeBlog/:isLiked",checkAuth,controller.likeBlog)
 
-router.put("/likeBlog/:isLiked/:token",checkAuth,controller.likeBlog)
-
-router.get("/isLikedBlog/:token",checkAuth,controller.isLikedBlog)
+router.get("/isLikedBlog",checkAuth,controller.isLikedBlog)
 
 
 module.exports = router

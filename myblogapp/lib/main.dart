@@ -15,7 +15,7 @@ void main() {
         create: (context) => ThemeManager(),
       )
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 

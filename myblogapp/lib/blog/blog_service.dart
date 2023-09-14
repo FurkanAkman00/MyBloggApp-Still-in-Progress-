@@ -26,8 +26,8 @@ class BlogService extends IBlogService {
         final blogs = response.data;
 
         if (blogs is List) {
-          List<Blog> myBlog = blogs.map((e) => Blog.fromJson(e)).toList();
-          return myBlog;
+          List<Blog> myBlogs = blogs.map((e) => Blog.fromJson(e)).toList();
+          return myBlogs;
         }
       } else {
         return null;
@@ -42,7 +42,7 @@ class BlogService extends IBlogService {
   Future<bool?> postBlog(Blog blog) async {
     try {
       final response = await _dio.post(
-        "/$token",
+        "/createBlog",
         data: {
           "title": blog.title,
           "content": blog.content,
@@ -63,7 +63,7 @@ class BlogService extends IBlogService {
 
   @override
   Future<List<Blog>?> getUserBlogs() async {
-    final result = await _dio.get("/userBlogs/$token");
+    final result = await _dio.get("/userBlogs");
     if (result.statusCode == HttpStatus.ok) {
       final blogs = result.data;
       if (blogs is List) {
@@ -77,7 +77,7 @@ class BlogService extends IBlogService {
 
   @override
   Future<bool?> isLikedBlog(Blog blog) async {
-    final response = await _dio.get("/isLikedBlog/$token", data: blog.toJson());
+    final response = await _dio.get("/isLikedBlog", data: blog.toJson());
     if (response.statusCode == HttpStatus.ok) {
       final result = response.data;
       print(result);
@@ -106,8 +106,7 @@ class BlogService extends IBlogService {
 
   @override
   Future<bool?> deleteBlog(Blog blog) async {
-    final result =
-        await _dio.delete("/userBlogDelete/$token", data: blog.toJson());
+    final result = await _dio.delete("/userBlogDelete", data: blog.toJson());
     if (result.statusCode == HttpStatus.ok) {
       return true;
     } else if (result.statusCode == HttpStatus.unauthorized) {
@@ -119,14 +118,10 @@ class BlogService extends IBlogService {
 
   @override
   Future<bool?> likeBlog(Blog blog, bool isLiked) async {
-    print("HERELİKEBLOG");
-    final result =
-        await _dio.put("/likeBlog/$isLiked/$token", data: blog.toJson());
+    final result = await _dio.put("/likeBlog/$isLiked", data: blog.toJson());
     if (result.statusCode == HttpStatus.ok) {
-      print("returned nuLLL!L!L!LTRUEEE");
       return true;
     } else {
-      print("returned nuLLL!L!L!L");
       return null;
     }
   }

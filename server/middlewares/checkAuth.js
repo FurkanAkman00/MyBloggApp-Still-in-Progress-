@@ -3,7 +3,7 @@ const User = require("../models/User")
 
 module.exports = async (req,res,next) => {
     try {
-        const userID = await jwt.verify(req.params.token,process.env.TOKEN_KEY)
+        const userID = await jwt.verify(req.headers.token,process.env.TOKEN_KEY)
         const user = await User.findById(userID.user_id)
         .populate('blogs')
         .populate("likedBlogs")

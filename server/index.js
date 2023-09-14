@@ -11,10 +11,6 @@ mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTop
 .then((result) => console.log("Connected to DB"))
 .catch((err) => console.log(err))
 
-app.get("/",(req,res) => {
-    res.send("HELO")
-})
-
 const userRoute = require("./routes/User")
 app.use("/user",userRoute)
 

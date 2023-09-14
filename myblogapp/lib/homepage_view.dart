@@ -95,7 +95,6 @@ class _HomePageState extends BlogController<HomePage> {
 
   Future<void> _navigateToBlogPageFromHome(Blog blog, bool isUserBlog) async {
     bool? isLiked = await isLikedBlog(blog);
-    print(isLiked);
     Navigator.of(context)
         .push(MaterialPageRoute(
             builder: (context) => SingleBlogView(
