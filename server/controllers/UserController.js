@@ -1,19 +1,29 @@
 const User = require("../models/User")
 const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
 
 module.exports = {
-
     loginPost :async (req,res) =>{
         try {
-            const user  = await User.findOne({email: req.body.email,password: req.body.password})
-            .populate("blogs")
-            .populate("likedBlogs")
-           
+            const user  = await User.findOne({email: req.body.email})
+            console.log(req.body.email)
+            console.log(req.body.password)
+            
             if(user){
-                const token = createToken(user)
-                console.log("Logged in")
-                res.status(200).json({token: token, user: user})
+                console.log("user found")
+                bcrypt.compare(req.body.password,user.password,(err,same) => {
+                    if(same){
+                        const token = createToken(user)
+                        console.log("Logged in")
+                        res.status(200).json({token: token, user: user})
+                    }
+                    else {
+                        console.log("error 404")
+                        res.sendStatus(400)
+                    }
+                })
             } else {
+                console.log("aoaoaoo")
                 res.sendStatus(404)
             }
             

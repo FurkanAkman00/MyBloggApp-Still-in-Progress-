@@ -47,6 +47,48 @@ module.exports = {
         }
     },
 
+    isLikedBlog: async(req,res) => {
+        try {
+            const user = req.user
+            const blog = await Blog.findOne(req.body)
+
+            var isLiked = false
+
+            for(var x = 0; x<user.likedBlogs.length;x++){
+                if(user.likedBlogs[x].id == blog.id){
+                    isLiked = true
+                }
+            }
+            
+            if(isLiked){
+                console.log(isLiked)
+                res.status(200).send(true)
+            } else {
+                res.status(200).send(false)
+            }
+            
+
+        } catch (error) {
+            console.log(error)
+            res.status(400)
+        }
+    },
+/* 
+    getLikedBlogs : async(req,res) =>{
+        try {
+            const user = req.user
+            if(user == false){
+                res.sendStatus(401)
+            } else {
+                res.status(200).send(user.likedBlogs)
+            }
+
+        } catch (error) {
+            console.error(error)
+            res.sendStatus(404)
+        }
+    }, */
+
     getUserBlogs : async(req,res) =>{
         try {
             const user = req.user
@@ -55,8 +97,6 @@ module.exports = {
             } else {
                 res.status(200).send(user.blogs)
             }
-            
-
         } catch (error) {
             console.error(error)
             res.sendStatus(404)
@@ -92,4 +132,54 @@ module.exports = {
             res.sendStatus(404)
         }
     },
+
+    likeBlog: async (req,res) => {
+        try {
+            const user = req.user
+            const blog = await Blog.findOne(req.body.blog)
+            
+            if(user && blog){
+                if(req.params.isLiked == "false"){
+                    console.log("liked")
+                    user.likedBlogs.push(blog)
+                    blog.likeCount = blog.likeCount + 1
+
+                    await user.save()
+                    await blog.save()
+
+                    res.sendStatus(200)
+
+                } else{
+                    console.log("disliked");
+                    var myBlog = await Blog.findOne(blog)
+                    console.log(myBlog)
+                    // const index = user.likedBlogs.indexOf(myBlog)
+                    var index = -1
+                    for(var i = 0;i<user.likedBlogs.length;i++){
+                        if(myBlog.id == user.likedBlogs[i].id){
+                            index = i
+                            console.log("a")
+                        }
+                    }
+            
+                    if (index >-1){
+                        user.likedBlogs.splice(index,1)
+                    }
+
+                    myBlog.likeCount = myBlog.likeCount - 1
+
+                    await user.save()
+                    await myBlog.save()
+                    
+                    res.sendStatus(200)
+                }
+                
+            } else {
+                res.sendStatus(404)
+            }
+
+        } catch (error) {
+            res.sendStatus(404)
+        }
+    }
 }

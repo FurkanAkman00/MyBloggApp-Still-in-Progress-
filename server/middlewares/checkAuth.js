@@ -7,7 +7,9 @@ module.exports = async (req,res,next) => {
         const user = await User.findById(userID.user_id)
         .populate('blogs')
         .populate("likedBlogs")
+        
         req.user = user
+
         next()
     } catch (error) {
         console.error(error)

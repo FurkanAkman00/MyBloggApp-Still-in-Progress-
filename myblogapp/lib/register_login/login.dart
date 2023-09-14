@@ -29,6 +29,7 @@ class _LoginPageState extends RegisterLoginController {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: LoginPageValues.iconColor),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -141,6 +142,7 @@ class LoginPageValues {
   static const errorMessage = "Wrong password or email. Please try again.";
 
   // Color Values
+  static const iconColor = Colors.black87;
   static const prefixIconColor = Colors.black87;
   static const counterColor = Colors.white;
   static const fillColor = Colors.white;

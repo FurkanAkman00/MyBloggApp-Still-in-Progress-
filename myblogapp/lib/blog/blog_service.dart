@@ -10,7 +10,9 @@ abstract class IBlogService {
   Future<List<Blog>?> getUserBlogs();
   Future<bool?> postBlog(Blog blog);
   Future<bool?> deleteBlog(Blog blog);
+  // Future<List<Blog>?> getLikedBlogs();
   Future<bool?> likeBlog(Blog blog, bool isLiked);
+  Future<bool?> isLikedBlog(Blog blog);
 }
 
 class BlogService extends IBlogService {
@@ -74,6 +76,35 @@ class BlogService extends IBlogService {
   }
 
   @override
+  Future<bool?> isLikedBlog(Blog blog) async {
+    final response = await _dio.get("/isLikedBlog/$token", data: blog.toJson());
+    if (response.statusCode == HttpStatus.ok) {
+      final result = response.data;
+      print(result);
+      if (result is bool) {
+        return result;
+      } else {
+        return null;
+      }
+    }
+    return null;
+  }
+
+/*   @override
+  Future<List<Blog>?> getLikedBlogs() async {
+    final result = await _dio.get("/likedBlogs/$token");
+    if (result.statusCode == HttpStatus.ok) {
+      final likedBlogs = result.data;
+      if (likedBlogs is List) {
+        return likedBlogs.map((e) => Blog.fromJson(e)).toList();
+      }
+    } else {
+      return null;
+    }
+    return null;
+  } */
+
+  @override
   Future<bool?> deleteBlog(Blog blog) async {
     final result =
         await _dio.delete("/userBlogDelete/$token", data: blog.toJson());
@@ -88,13 +119,14 @@ class BlogService extends IBlogService {
 
   @override
   Future<bool?> likeBlog(Blog blog, bool isLiked) async {
-    final result = await _dio.post("/blogs/likeBlog/$token",
-        data: {"blog": blog.toJson(), "isLiked": isLiked});
+    print("HERELİKEBLOG");
+    final result =
+        await _dio.put("/likeBlog/$isLiked/$token", data: blog.toJson());
     if (result.statusCode == HttpStatus.ok) {
+      print("returned nuLLL!L!L!LTRUEEE");
       return true;
-    } else if (result.statusCode == HttpStatus.unauthorized) {
-      return false;
     } else {
+      print("returned nuLLL!L!L!L");
       return null;
     }
   }

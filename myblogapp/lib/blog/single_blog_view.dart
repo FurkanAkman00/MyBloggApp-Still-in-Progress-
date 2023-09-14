@@ -5,13 +5,14 @@ import 'package:myblogapp/blog/blog_controller.dart';
 import '../models/BlogModel.dart';
 
 class SingleBlogView extends StatefulWidget {
-  const SingleBlogView({
-    super.key,
-    required this.blog,
-    required this.isUserBlog,
-  });
+  const SingleBlogView(
+      {super.key,
+      required this.blog,
+      required this.isUserBlog,
+      required this.isLiked});
   final Blog blog;
   final bool isUserBlog;
+  final bool isLiked;
 
   @override
   State<SingleBlogView> createState() => _SingleBlogViewState();
@@ -26,8 +27,12 @@ class _SingleBlogViewState extends BlogController<SingleBlogView> {
               ? const SizedBox.shrink()
               : IconButton(
                   splashRadius: BlogValues.buttonSplashRadius,
-                  onPressed: () {},
-                  icon: const Icon(Icons.check_circle_outline)),
+                  onPressed: () {
+                    likeBlog(widget.blog, widget.isLiked);
+                  },
+                  icon: Icon(widget.isLiked
+                      ? Icons.check_circle_rounded
+                      : Icons.check_circle_outline)),
           backgroundColor: Colors.black87,
           iconTheme: const IconThemeData(color: Colors.white),
           actions: [

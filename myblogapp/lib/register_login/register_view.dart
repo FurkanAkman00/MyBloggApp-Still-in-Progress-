@@ -31,6 +31,7 @@ class _RegisterViewState extends RegisterLoginController {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black87),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(

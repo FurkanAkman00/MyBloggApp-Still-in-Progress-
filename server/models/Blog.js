@@ -11,11 +11,6 @@ const blogSchema = new Schema({
         required: false
     },
 
-    dislikeCount: {
-        type: Number,
-        required: false
-    },
-
     content: {
         type: String,
         required: true
